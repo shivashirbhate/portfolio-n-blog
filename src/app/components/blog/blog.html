@@ -1,0 +1,120 @@
+<div class="blog-container">
+  <!-- Hero Section with Blog Image -->
+  <section *ngIf="blog() as post" class="blog-hero-section">
+    <div class="blog-hero-card" [style.background-image]="post.image ? 'url(' + post.image + ')' : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <a routerLink="/blogs" class="back-link">← Back to Articles</a>
+        <div class="blog-meta">
+          <span class="blog-date">{{ post.date }}</span>
+          <span class="blog-author">by {{ post.author }}</span>
+          <span class="blog-read-time">{{ readTime() }}</span>
+        </div>
+        <h1 class="blog-title">{{ post.title }}</h1>
+        <p class="blog-summary">{{ post.summary }}</p>
+        <div class="blog-tags">
+          <span *ngFor="let tag of post.tags" class="tag">{{ tag }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Loading State -->
+  <div *ngIf="loading()" class="loading-section">
+    <div class="loading-spinner"></div>
+    <p>Loading blog post...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error() && !loading()" class="error-section">
+    <div class="error-card">
+      <h2>Oops! Something went wrong</h2>
+      <p class="mb-3">{{ error() }}</p>
+      <a routerLink="/blogs" class="cta-button">Back to Articles</a>
+    </div>
+  </div>
+
+  <!-- Blog Content -->
+  <section *ngIf="shouldShowBlogContent()" class="blog-content-section">
+    <div class="section-container">
+      <article *ngIf="blog() as post" class="blog-article">
+        <div class="post-content">
+          <div *ngFor="let item of post.content" class="content-item">
+            <!-- Text Content -->
+            <p *ngIf="isTextContent(item)" class="text-paragraph">{{ getTextContent(item) }}</p>
+
+            <!-- Image Content -->
+            <figure *ngIf="isImageContent(item)" class="content-image">
+              <img [src]="item.src" [alt]="item.alt" loading="lazy" />
+              <figcaption *ngIf="item.caption">{{ item.caption }}</figcaption>
+            </figure>
+
+            <!-- YouTube Video Content -->
+            <div *ngIf="isYouTubeContent(item)" class="content-video">
+              <iframe
+                *ngIf="getSafeYouTubeUrl(item.url) as safeUrl"
+                [src]="safeUrl"
+                [title]="item.title || 'YouTube video'"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy">
+              </iframe>
+              <p *ngIf="!getSafeYouTubeUrl(item.url)" class="video-error">
+                Unable to load YouTube video. Invalid URL: {{ item.url }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Article Footer -->
+        <footer class="article-footer">
+          <div class="share-section">
+            <h3>Share this article</h3>
+            <div class="share-buttons">
+              <button class="share-btn twitter" (click)="shareOnTwitter(post)">🐦 Twitter</button>
+              <button class="share-btn linkedin" (click)="shareOnLinkedIn(post)">💼 LinkedIn</button>
+              <button class="share-btn copy" (click)="copyLink(post)">🔗 Copy Link</button>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </section>
+
+  <!-- Recommended Blogs Section -->
+  <section *ngIf="recommendedBlogs().length > 0" class="recommended-section">
+    <div class="section-container">
+      <div class="section-header">
+        <h2>Recommended Articles</h2>
+        <div class="header-line"></div>
+      </div>
+      <div class="recommended-grid">
+        <article *ngFor="let recBlog of recommendedBlogs()" class="recommended-card" [routerLink]="['/blog', recBlog.id]">
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="card-date">{{ recBlog.date }}</span>
+              <span class="card-author">{{ recBlog.author }}</span>
+            </div>
+            <h3 class="card-title">{{ recBlog.title }}</h3>
+            <p class="card-summary">{{ recBlog.summary }}</p>
+            <div class="card-tags">
+              <span *ngFor="let tag of recBlog.tags" class="tag">{{ tag }}</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Navigation Footer -->
+  <section class="blog-navigation">
+    <div class="section-container">
+      <div class="nav-links">
+        <a routerLink="/blogs" class="nav-link primary">← All Articles</a>
+        <a routerLink="/" class="nav-link secondary">Home</a>
+      </div>
+    </div>
+  </section>
+</div>
+

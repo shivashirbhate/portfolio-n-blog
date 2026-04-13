@@ -1,0 +1,100 @@
+<div class="blog-listing-container">
+  <!-- Hero Section -->
+  <section class="blog-hero-section">
+    <div class="blog-hero-content">
+      <h1>Blog</h1>
+      <p>Thoughts on web development, Angular, and modern frontend practices</p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="blog-main-section">
+    <div class="section-container">
+      <!-- Search Bar -->
+      <div class="search-container">
+        <div class="search-wrapper">
+          <input
+            type="text"
+            [(ngModel)]="searchQuery"
+            (input)="onSearch()"
+            placeholder="Search blogs by title, author, or tags..."
+            class="search-input"
+          />
+          <span class="search-icon">🔍</span>
+        </div>
+        <p class="result-message">{{ resultMessage() }}</p>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="loading()" class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading blog posts...</p>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="error() && !loading()" class="error-state">
+        <p class="error">{{ error() }}</p>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="!loading() && !error() && filteredBlogs().length === 0" class="empty-state">
+        <p>No blog posts found.</p>
+        <p *ngIf="searchQuery()">Try a different search or browse all posts.</p>
+      </div>
+
+      <!-- Blog Grid -->
+      <div *ngIf="!loading() && paginatedBlogs().length > 0" class="blog-grid">
+        <article *ngFor="let blog of paginatedBlogs()" class="blog-card">
+          <div class="blog-card-header">
+            <h2><a [routerLink]="['/blog', blog.id]">{{ blog.title }}</a></h2>
+          </div>
+          <div class="blog-meta">
+            <span class="date">📅 {{ blog.date }}</span>
+            <span class="author">✍️ {{ blog.author }}</span>
+          </div>
+          <p class="blog-summary">{{ blog.summary }}</p>
+          <div *ngIf="blog.tags && blog.tags.length" class="blog-tags">
+            <span *ngFor="let tag of blog.tags" class="tag">{{ tag }}</span>
+          </div>
+          <a [routerLink]="['/blog', blog.id]" class="read-more">Read Full Post →</a>
+        </article>
+      </div>
+
+      <!-- Pagination -->
+      <div *ngIf="!loading() && totalPages() > 1" class="pagination-container">
+        <button
+          (click)="prevPage()"
+          [disabled]="currentPage() === 1"
+          class="pagination-btn prev-btn"
+        >
+          ← Previous
+        </button>
+
+        <div class="page-numbers">
+          <button
+            *ngFor="let page of getPageNumbers()"
+            (click)="goToPage(page)"
+            [class.active]="page === currentPage()"
+            class="page-btn"
+          >
+            {{ page }}
+          </button>
+        </div>
+
+        <button
+          (click)="nextPage()"
+          [disabled]="currentPage() === totalPages()"
+          class="pagination-btn next-btn"
+        >
+          Next →
+        </button>
+      </div>
+
+      <!-- Pagination Info -->
+      <div *ngIf="!loading() && totalPages() > 1" class="pagination-info">
+        <p>Page {{ currentPage() }} of {{ totalPages() }}</p>
+      </div>
+    </div>
+  </section>
+</div>
+

@@ -1,0 +1,116 @@
+<div class="portfolio-container">
+  <!-- Hero / Header Section - Full Page Jumbotron -->
+  <section class="hero-section">
+    <div class="hero-card">
+      <div class="hero-content">
+        <h1 class="name">{{ fullName }}</h1>
+        <p class="current-role">{{ currentRole }}</p>
+        <p class="headline-tagline">{{ headline }}</p>
+        <p class="summary-intro">{{ summary }}</p>
+        <div class="hero-cta">
+          <a href="#contact" class="cta-button">Get In Touch</a>
+          <a href="/blogs" class="cta-button secondary">Read Blog</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Contact -->
+  <section class="contact-bar">
+    <div class="contact-links">
+      <a *ngFor="let c of contact" [href]="'mailto:' + c.value" class="contact-item" [title]="c.label">
+        <span class="contact-icon">{{ c.icon }}</span>
+        <span class="contact-label">{{ c.value }}</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Tech Stack -->
+  <section class="tech-stack-section">
+    <div class="section-container">
+    <div class="section-header">
+      <h2>Technology Stack</h2>
+      <div class="header-line"></div>
+    </div>
+    <div class="tech-grid">
+      <div *ngFor="let tech of techStack" class="tech-category">
+        <h3>{{ tech.category }}</h3>
+        <div class="tech-badges">
+          <span *ngFor="let item of tech.items" class="tech-badge">{{ item }}</span>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- Currently Working On -->
+  <section class="working-on-section">
+    <div class="section-container">
+    <div class="section-header">
+      <h2>Currently Working On</h2>
+      <div class="header-line"></div>
+    </div>
+    <div class="projects-cards">
+      <div *ngFor="let project of workingOn" class="work-card">
+        <div class="work-card-header">
+          <h3>{{ project.title }}</h3>
+          <span class="status-badge" [ngClass]="'status-' + project.status.toLowerCase()">{{ project.status }}</span>
+        </div>
+        <p>{{ project.description }}</p>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- Personal Projects -->
+  <section class="projects-section">
+    <div class="section-container">
+    <div class="section-header">
+      <h2>Personal Projects</h2>
+      <div class="header-line"></div>
+    </div>
+    <div class="projects-list">
+      <article *ngFor="let project of personalProjects" class="project-card">
+        <div class="project-header">
+          <h3>{{ project.title }}</h3>
+          <a [href]="project.github" target="_blank" rel="noopener" class="github-link">→ GitHub</a>
+        </div>
+        <p class="project-description">{{ project.description }}</p>
+        <div class="project-tech">
+          <span *ngFor="let t of project.tech" class="tech-tag">{{ t }}</span>
+        </div>
+        <div *ngIf="project.link" class="project-link">
+          <a [href]="project.link" target="_blank" rel="noopener">Live Demo ↗</a>
+        </div>
+      </article>
+    </div>
+    </div>
+  </section>
+
+  <!-- Professional Experience -->
+  <section class="experience-section">
+    <div class="section-container">
+    <div class="section-header">
+      <h2>Professional Experience</h2>
+      <div class="header-line"></div>
+    </div>
+    <div class="experience-timeline">
+      <article *ngFor="let exp of professionalExperience; let first = first" class="experience-item" [ngClass]="{ 'first-item': first }">
+        <div class="timeline-dot"></div>
+        <div class="experience-content">
+          <div class="experience-header">
+            <h3>{{ exp.role }}</h3>
+            <p class="company-name">{{ exp.company }}</p>
+            <span class="period">{{ exp.period }}</span>
+          </div>
+          <ul class="highlights">
+            <li *ngFor="let highlight of exp.highlights">{{ highlight }}</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+    </div>
+  </section>
+
+</div>
+
