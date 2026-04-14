@@ -10,7 +10,7 @@ interface BlogPost {
   date: string;
   summary: string;
   tags: string[];
-  content: (string | { type: 'text', content: string } | { type: 'image', src: string, alt: string, caption?: string } | { type: 'youtube', url: string, title?: string })[];
+  content: (string | { type: 'text', content: string } | { type: 'image', src: string, alt: string, caption?: string } | { type: 'youtube', url: string, title?: string } | { type: 'code', language: string, content: string })[];
   image?: string;
   readTime?: string;
 }
@@ -144,6 +144,10 @@ export class Blog {
     return item && item.type === 'youtube';
   }
 
+  isCodeContent(item: any): item is { type: 'code', language: string, content: string } {
+    return item && item.type === 'code';
+  }
+
   getYouTubeVideoId(url: string): string | null {
     const patterns = [
       /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
@@ -202,6 +206,15 @@ export class Blog {
       alert('Link copied to clipboard!');
     } catch (error) {
       console.error('Failed to copy link:', error);
+    }
+  }
+
+  async copyCode(code: string) {
+    try {
+      await navigator.clipboard.writeText(code);
+      alert('Code copied to clipboard!');
+    } catch (error) {
+      console.error('Failed to copy code:', error);
     }
   }
 }

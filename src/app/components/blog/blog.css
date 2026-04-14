@@ -263,6 +263,81 @@
   margin: 1rem 0;
 }
 
+/* Code Block Content */
+.content-code {
+  margin: 2rem 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background: #1e1e1e;
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  background: #2d2d2d;
+  border-bottom: 1px solid #3d3d3d;
+}
+
+.code-language {
+  font-weight: 600;
+  color: #667eea;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.copy-code-btn {
+  padding: 0.5rem 1rem;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.copy-code-btn:hover {
+  background: #764ba2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.copy-code-btn:active {
+  transform: translateY(0);
+}
+
+.content-code pre {
+  margin: 0;
+  padding: 1.5rem;
+  overflow-x: auto;
+}
+
+.content-code code {
+  display: block;
+  color: #e8e8e8;
+  font-family: 'Courier New', 'Monaco', monospace;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  white-space: pre;
+  word-break: break-word;
+}
+
+/* Syntax highlighting classes (optional - for manual styling) */
+.content-code .keyword { color: #569cd6; }
+.content-code .string { color: #ce9178; }
+.content-code .number { color: #b5cea8; }
+.content-code .comment { color: #6a9955; font-style: italic; }
+.content-code .function { color: #dcdcaa; }
+.content-code .attribute { color: #9cdcfe; }
+
 /* Article Footer */
 .article-footer {
   margin-top: 3rem;
@@ -490,6 +565,23 @@
     height: 250px;
   }
 
+  .content-code {
+    margin: 1.5rem 0;
+  }
+
+  .content-code pre {
+    padding: 1rem;
+  }
+
+  .content-code code {
+    font-size: 0.85rem;
+  }
+
+  .copy-code-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+  }
+
   .recommended-grid {
     grid-template-columns: 1fr;
   }
@@ -519,6 +611,32 @@
 
   .blog-article {
     padding: 1.5rem;
+  }
+
+  .content-code {
+    margin: 1rem 0;
+    border-radius: 8px;
+  }
+
+  .content-code pre {
+    padding: 0.75rem;
+  }
+
+  .content-code code {
+    font-size: 0.8rem;
+  }
+
+  .code-header {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+    padding: 0.5rem 1rem;
+  }
+
+  .copy-code-btn {
+    align-self: flex-end;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.7rem;
   }
 
   .section-container {

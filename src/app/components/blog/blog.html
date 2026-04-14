@@ -64,6 +64,15 @@
                 Unable to load YouTube video. Invalid URL: {{ item.url }}
               </p>
             </div>
+
+            <!-- Code Block Content -->
+            <div *ngIf="isCodeContent(item)" class="content-code">
+              <div class="code-header">
+                <span class="code-language">{{ item.language }}</span>
+                <button class="copy-code-btn" (click)="copyCode(item.content)" title="Copy code">📋 Copy</button>
+              </div>
+              <pre><code [innerHTML]="item.content"></code></pre>
+            </div>
           </div>
         </div>
 
