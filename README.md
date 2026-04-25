@@ -4,13 +4,13 @@ A modern, professional portfolio website showcasing projects, experience, skills
 
 ## Features
 
-- **Portfolio Section**: Comprehensive resume-style layout with hero section, tech stack, current projects, and experience
-- **Blog System**: Dynamic blog listings with search, filtering, and pagination
-- **Individual Blog Pages**: Rich blog posts with images, YouTube videos, related articles, and social sharing
-- **Responsive Design**: Mobile-first approach with glassmorphism effects
-- **SEO Optimized**: Dynamic meta tags, Open Graph support, and semantic HTML
-- **Static-First**: JSON-driven content architecture for easy content management
-- **No Backend Required**: Pure frontend solution with public assets
+- **Portfolio Section**: Hero section with personal introduction, current role, and call-to-action buttons; Quick contact bar with email links; Technology stack showcase organized by categories; Currently working on section with project status badges; Personal projects gallery with GitHub links, tech stack tags, and live demo links; Professional experience timeline with role highlights
+- **Blog System**: Blog listing page with hero section, search functionality (searches across titles, summaries, authors, and tags), pagination controls, and blog cards displaying metadata, tags, and summaries
+- **Individual Blog Pages**: Rich blog posts with hero images, publication metadata (date, author, estimated read time), tag display; Content supporting text paragraphs, images with captions, embedded YouTube videos, and syntax-highlighted code blocks with copy functionality; Social sharing buttons for Twitter, LinkedIn, and link copying; Recommended articles section based on tag matching
+- **Responsive Design**: Mobile-first responsive layout with glassmorphism visual effects, CSS Grid and Flexbox for modern layouts
+- **SEO Optimized**: Dynamic meta tags for each page, Open Graph support for social media sharing, and semantic HTML structure
+- **Static-First Architecture**: JSON-driven content management for portfolio data and blog posts, enabling easy updates without code changes
+- **No Backend Required**: Pure frontend application using public assets, with lazy-loaded components for optimal performance
 
 ## Tech Stack
 
