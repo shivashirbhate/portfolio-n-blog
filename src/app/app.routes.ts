@@ -18,6 +18,11 @@ export const routes: Routes = [
       import('./components/blog/blog').then((m) => m.Blog)
   },
   {
+    path: 'license',
+    loadComponent: () =>
+      import('./components/license/license').then((m) => m.License)
+  },
+  {
     path: '**',
     redirectTo: ''
   }
