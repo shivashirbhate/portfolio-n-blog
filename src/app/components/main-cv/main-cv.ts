@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 interface TechSkill {
   category: string;
@@ -42,7 +43,7 @@ interface PortfolioData {
 @Component({
   selector: 'app-main-cv',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './main-cv.html',
   styleUrl: './main-cv.css',
 })
@@ -110,6 +111,10 @@ export class MainCv implements OnInit {
 
   get contact() {
     return this.data()?.contact || [];
+  }
+
+  getStatusClass(status: string) {
+    return 'status-' + status.toLowerCase().replace(/\s+/g, '-');
   }
 }
 

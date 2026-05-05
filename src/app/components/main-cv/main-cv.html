@@ -8,8 +8,8 @@
         <p class="headline-tagline">{{ headline }}</p>
         <p class="summary-intro">{{ summary }}</p>
         <div class="hero-cta">
-          <a href="#contact" class="cta-button">Get In Touch</a>
-          <a href="/blogs" class="cta-button secondary">Read Blog</a>
+          <a [routerLink]="['/']" fragment="contact" class="cta-button">Get In Touch</a>
+          <a routerLink="/blogs" class="cta-button secondary">Read Blog</a>
         </div>
       </div>
     </div>
@@ -54,7 +54,7 @@
       <div *ngFor="let project of workingOn" class="work-card">
         <div class="work-card-header">
           <h3>{{ project.title }}</h3>
-          <span class="status-badge" [ngClass]="'status-' + project.status.toLowerCase()">{{ project.status }}</span>
+          <span class="status-badge" [ngClass]="getStatusClass(project.status)">{{ project.status }}</span>
         </div>
         <p>{{ project.description }}</p>
       </div>
