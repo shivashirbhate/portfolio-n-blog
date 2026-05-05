@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal, computed } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { DomSanitizer, SafeResourceUrl, Title, Meta } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl, SafeHtml, Title, Meta } from '@angular/platform-browser';
 
 interface BlogPost {
   id: string;
@@ -186,6 +186,47 @@ export class Blog {
 
   getTextContent(item: string | { type: 'text', content: string }): string {
     return typeof item === 'string' ? item : item.content;
+  }
+
+  formatTextContent(item: string | { type: 'text', content: string }): SafeHtml {
+    const rawText = this.getTextContent(item);
+    const html = rawText
+      .split(/\r?\n/)
+      .map((line) => {
+        const trimmed = line.trim();
+        if (!trimmed) return '';
+
+        const headingMatch = trimmed.match(/^(#{1,6})\s+(.*)$/);
+        if (headingMatch) {
+          const level = Math.min(6, headingMatch[1].length);
+          return `<h${level}>${this.formatInline(headingMatch[2])}</h${level}>`;
+        }
+
+        return `<p>${this.formatInline(trimmed)}</p>`;
+      })
+      .join('');
+
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
+
+  private formatInline(text: string): string {
+    let escaped = this.escapeHtml(text);
+
+    escaped = escaped.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    escaped = escaped.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    escaped = escaped.replace(/__([^_]+)__/g, '<u>$1</u>');
+    escaped = escaped.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+
+    return escaped;
+  }
+
+  private escapeHtml(value: string): string {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   shareOnTwitter(post: BlogPost) {

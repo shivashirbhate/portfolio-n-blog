@@ -41,7 +41,7 @@
         <div class="post-content">
           <div *ngFor="let item of post.content" class="content-item">
             <!-- Text Content -->
-            <p *ngIf="isTextContent(item)" class="text-paragraph">{{ getTextContent(item) }}</p>
+            <div *ngIf="isTextContent(item)" [innerHTML]="formatTextContent(item)"></div>
 
             <!-- Image Content -->
             <figure *ngIf="isImageContent(item)" class="content-image">
