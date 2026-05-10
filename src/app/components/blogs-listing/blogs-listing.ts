@@ -27,18 +27,27 @@ export class BlogsListing {
   readonly currentPage = signal(1);
   readonly pageSize = signal(6);
 
-  // Computed: filtered blogs based on search query
+  // Computed: filtered and sorted blogs based on search query
   readonly filteredBlogs = computed(() => {
     const query = this.searchQuery().toLowerCase();
-    if (!query) return this.blogs();
+    let results = this.blogs();
 
-    return this.blogs().filter(
-      (blog) =>
-        blog.title.toLowerCase().includes(query) ||
-        blog.summary.toLowerCase().includes(query) ||
-        blog.author.toLowerCase().includes(query) ||
-        (blog.tags?.some((tag) => tag.toLowerCase().includes(query)) ?? false)
-    );
+    if (query) {
+      results = results.filter(
+        (blog) =>
+          blog.title.toLowerCase().includes(query) ||
+          blog.summary.toLowerCase().includes(query) ||
+          blog.author.toLowerCase().includes(query) ||
+          (blog.tags?.some((tag) => tag.toLowerCase().includes(query)) ?? false)
+      );
+    }
+
+    // Sort by date in descending order (most recent first)
+    return results.sort((a, b) => {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      return dateB - dateA; // Descending order
+    });
   });
 
   // Computed: total pages
