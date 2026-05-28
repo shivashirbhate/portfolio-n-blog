@@ -26,25 +26,35 @@
       </div>
 
       <!-- Loading State -->
-      <div *ngIf="loading()" class="loading-state">
+      @if (loading()) {
+      <div class="loading-state">
         <div class="spinner"></div>
         <p>Loading blog posts...</p>
       </div>
+      }
 
       <!-- Error State -->
-      <div *ngIf="error() && !loading()" class="error-state">
+      @if (error() && !loading()) {
+      <div class="error-state">
         <p class="error">{{ error() }}</p>
       </div>
+      }
 
       <!-- Empty State -->
-      <div *ngIf="!loading() && !error() && filteredBlogs().length === 0" class="empty-state">
+      @if (!loading() && !error() && filteredBlogs().length === 0) {
+      <div class="empty-state">
         <p>No blog posts found.</p>
-        <p *ngIf="searchQuery()">Try a different search or browse all posts.</p>
+        @if (searchQuery()) {
+        <p>Try a different search or browse all posts.</p>
+        }
       </div>
+      }
 
       <!-- Blog Grid -->
-      <div *ngIf="!loading() && paginatedBlogs().length > 0" class="blog-grid">
-        <article *ngFor="let blog of paginatedBlogs()" class="blog-card">
+      @if (!loading() && paginatedBlogs().length > 0) {
+      <div class="blog-grid">
+        @for (blog of paginatedBlogs(); track blog.id) {
+        <article class="blog-card">
           <div class="blog-card-header">
             <h2><a [routerLink]="['/blog', blog.id]">{{ blog.title }}</a></h2>
           </div>
@@ -53,15 +63,22 @@
             <span class="author">✍️ {{ blog.author }}</span>
           </div>
           <p class="blog-summary">{{ blog.summary }}</p>
-          <div *ngIf="blog.tags && blog.tags.length" class="blog-tags">
-            <span *ngFor="let tag of blog.tags" class="tag">{{ tag }}</span>
+          @if (blog.tags && blog.tags.length) {
+          <div class="blog-tags">
+            @for (tag of blog.tags; track tag) {
+            <span class="tag">{{ tag }}</span>
+            }
           </div>
+          }
           <a [routerLink]="['/blog', blog.id]" class="read-more">Read Full Post →</a>
         </article>
+        }
       </div>
+      }
 
       <!-- Pagination -->
-      <div *ngIf="!loading() && totalPages() > 1" class="pagination-container">
+      @if (!loading() && totalPages() > 1) {
+      <div class="pagination-container">
         <button
           (click)="prevPage()"
           [disabled]="currentPage() === 1"
@@ -71,14 +88,15 @@
         </button>
 
         <div class="page-numbers">
+          @for (page of getPageNumbers(); track page) {
           <button
-            *ngFor="let page of getPageNumbers()"
             (click)="goToPage(page)"
             [class.active]="page === currentPage()"
             class="page-btn"
           >
             {{ page }}
           </button>
+          }
         </div>
 
         <button
@@ -89,11 +107,14 @@
           Next →
         </button>
       </div>
+      }
 
       <!-- Pagination Info -->
-      <div *ngIf="!loading() && totalPages() > 1" class="pagination-info">
+      @if (!loading() && totalPages() > 1) {
+      <div class="pagination-info">
         <p>Page {{ currentPage() }} of {{ totalPages() }}</p>
       </div>
+      }
     </div>
   </section>
 </div>

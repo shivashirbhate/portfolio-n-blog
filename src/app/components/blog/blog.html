@@ -1,6 +1,7 @@
 <div class="blog-container">
   <!-- Hero Section with Blog Image -->
-  <section [@If]="blog() as post" class="blog-hero-section">
+  @if (blog(); as post) {
+  <section class="blog-hero-section">
     <div class="blog-hero-card" [style.background-image]="post.image ? 'url(' + post.image + ')' : 'linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%)'">
       <div class="hero-overlay"></div>
       <div class="hero-content">
@@ -13,46 +14,63 @@
         <h1 class="blog-title">{{ post.title }}</h1>
         <p class="blog-summary">{{ post.summary }}</p>
         <div class="blog-tags">
-          <span *ngFor="let tag of post.tags" class="tag">{{ tag }}</span>
+          @for (tag of post.tags; track tag) {
+          <span class="tag">{{ tag }}</span>
+          }
         </div>
       </div>
     </div>
   </section>
+  }
 
   <!-- Loading State -->
-  <div [@If]="loading()" class="loading-section">
+  @if (loading()) {
+  <div class="loading-section">
     <div class="loading-spinner"></div>
     <p>Loading blog post...</p>
   </div>
+  }
 
   <!-- Error State -->
-  <div [@If]="error() && !loading()" class="error-section">
+  @if (error() && !loading()) {
+  <div class="error-section">
     <div class="error-card">
       <h2>Oops! Something went wrong</h2>
       <p class="mb-3">{{ error() }}</p>
       <a routerLink="/blogs" class="cta-button">Back to Articles</a>
     </div>
   </div>
+  }
 
   <!-- Blog Content -->
-  <section [@If]="shouldShowBlogContent()" class="blog-content-section">
+  @if (shouldShowBlogContent()) {
+  <section class="blog-content-section">
     <div class="section-container">
-      <article [@If]="blog() as post" class="blog-article">
+      @if (blog(); as post) {
+      <article class="blog-article">
         <div class="post-content">
-          <div *ngFor="let item of post.content" class="content-item">
+          @for (item of post.content; track $index) {
+          <div class="content-item">
             <!-- Text Content -->
-            <div [@If]="isTextContent(item)" [innerHTML]="formatTextContent(item)"></div>
+            @if (isTextContent(item)) {
+            <div [innerHTML]="formatTextContent(item)"></div>
+            }
 
             <!-- Image Content -->
-            <figure [@If]="isImageContent(item)" class="content-image">
+            @if (isImageContent(item)) {
+            <figure class="content-image">
               <img [src]="item.src" [alt]="item.alt" loading="lazy" />
-              <figcaption [@If]="item.caption">{{ item.caption }}</figcaption>
+              @if (item.caption) {
+              <figcaption>{{ item.caption }}</figcaption>
+              }
             </figure>
+            }
 
             <!-- YouTube Video Content -->
-            <div [@If]="isYouTubeContent(item)" class="content-video">
+            @if (isYouTubeContent(item)) {
+            <div class="content-video">
+              @if (getSafeYouTubeUrl(item.url); as safeUrl) {
               <iframe
-                [@If]="getSafeYouTubeUrl(item.url) as safeUrl"
                 [src]="safeUrl"
                 [title]="item.title || 'YouTube video'"
                 frameborder="0"
@@ -60,46 +78,65 @@
                 allowfullscreen
                 loading="lazy">
               </iframe>
-              <p [@If]="!getSafeYouTubeUrl(item.url)" class="video-error">
+              }
+              @if (!getSafeYouTubeUrl(item.url)) {
+              <p class="video-error">
                 Unable to load YouTube video. Invalid URL: {{ item.url }}
               </p>
+              }
             </div>
+            }
 
             <!-- Table Content -->
-            <div [@If]="isTableContent(item)" class="content-table">
+            @if (isTableContent(item)) {
+            <div class="content-table">
               <div class="table-wrapper">
                 <table>
                   <thead>
                     <tr>
-                      <th *ngFor="let h of item.headers">{{ h }}</th>
+                      @for (h of item.headers; track $index) {
+                      <th>{{ h }}</th>
+                      }
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let row of item.rows">
-                      <td *ngFor="let cell of row">{{ cell }}</td>
+                    @for (row of item.rows; track $index) {
+                    <tr>
+                      @for (cell of row; track $index) {
+                      <td>{{ cell }}</td>
+                      }
                     </tr>
+                    }
                   </tbody>
                 </table>
               </div>
             </div>
+            }
 
             <!-- PDF Content -->
-            <div [@If]="isPdfContent(item)" class="content-pdf">
+            @if (isPdfContent(item)) {
+            <div class="content-pdf">
               <a [href]="item.url" target="_blank" rel="noopener noreferrer" class="pdf-card">
                 📄 {{ item.title || 'View PDF' }}
               </a>
-              <p [@If]="item.description" class="pdf-description">{{ item.description }}</p>
+              @if (item.description) {
+              <p class="pdf-description">{{ item.description }}</p>
+              }
             </div>
+            }
 
             <!-- Code Block Content -->
-            <div [@If]="isCodeContent(item)" class="content-code">
+            @if (isCodeContent(item)) {
+            <div class="content-code">
               <div class="code-header">
                 <span class="code-language">{{ item.language }}</span>
                 <button class="copy-code-btn" (click)="copyCode(item.content)" title="Copy code">📋 Copy</button>
               </div>
               <pre><code [innerHTML]="item.content"></code></pre>
             </div>
+            }
           </div>
+          }
         </div>
 
         <!-- Article Footer -->
@@ -114,18 +151,22 @@
           </div>
         </footer>
       </article>
+      }
     </div>
   </section>
+  }
 
   <!-- Recommended Blogs Section -->
-  <section [@If]="recommendedBlogs().length > 0" class="recommended-section">
+  @if (recommendedBlogs().length > 0) {
+  <section class="recommended-section">
     <div class="section-container">
       <div class="section-header">
         <h2>Recommended Articles</h2>
         <div class="header-line"></div>
       </div>
       <div class="recommended-grid">
-        <article *ngFor="let recBlog of recommendedBlogs()" class="recommended-card" [routerLink]="['/blog', recBlog.id]">
+        @for (recBlog of recommendedBlogs(); track recBlog.id) {
+        <article class="recommended-card" [routerLink]="['/blog', recBlog.id]">
           <div class="card-content">
             <div class="card-meta">
               <span class="card-date">{{ recBlog.date }}</span>
@@ -134,13 +175,17 @@
             <h3 class="card-title">{{ recBlog.title }}</h3>
             <p class="card-summary">{{ recBlog.summary }}</p>
             <div class="card-tags">
-              <span *ngFor="let tag of recBlog.tags" class="tag">{{ tag }}</span>
+              @for (tag of recBlog.tags; track tag) {
+              <span class="tag">{{ tag }}</span>
+              }
             </div>
           </div>
         </article>
+        }
       </div>
     </div>
   </section>
+  }
 
   <!-- Navigation Footer -->
   <section class="blog-navigation">

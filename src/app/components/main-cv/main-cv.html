@@ -18,10 +18,12 @@
   <!-- Quick Contact -->
   <section class="contact-bar">
     <div class="contact-links">
-      <a *ngFor="let c of contact" [href]="'mailto:' + c.value" class="contact-item" [title]="c.label">
+      @for (c of contact; track c.label) {
+      <a [href]="'mailto:' + c.value" class="contact-item" [title]="c.label">
         <span class="contact-icon">{{ c.icon }}</span>
         <span class="contact-label">{{ c.value }}</span>
       </a>
+      }
     </div>
   </section>
 
@@ -33,12 +35,16 @@
       <div class="header-line"></div>
     </div>
     <div class="tech-grid">
-      <div *ngFor="let tech of techStack" class="tech-category">
+      @for (tech of techStack; track tech.category) {
+      <div class="tech-category">
         <h3>{{ tech.category }}</h3>
         <div class="tech-badges">
-          <span *ngFor="let item of tech.items" class="tech-badge">{{ item }}</span>
+          @for (item of tech.items; track item) {
+          <span class="tech-badge">{{ item }}</span>
+          }
         </div>
       </div>
+      }
     </div>
     </div>
   </section>
@@ -51,13 +57,15 @@
       <div class="header-line"></div>
     </div>
     <div class="projects-cards">
-      <div *ngFor="let project of workingOn" class="work-card">
+      @for (project of workingOn; track project.title) {
+      <div class="work-card">
         <div class="work-card-header">
           <h3>{{ project.title }}</h3>
           <span class="status-badge" [ngClass]="getStatusClass(project.status)">{{ project.status }}</span>
         </div>
         <p>{{ project.description }}</p>
       </div>
+      }
     </div>
     </div>
   </section>
@@ -70,19 +78,25 @@
       <div class="header-line"></div>
     </div>
     <div class="projects-list">
-      <article *ngFor="let project of personalProjects" class="project-card">
+      @for (project of personalProjects; track project.title) {
+      <article class="project-card">
         <div class="project-header">
           <h3>{{ project.title }}</h3>
           <a [href]="project.github" target="_blank" rel="noopener" class="github-link">→ GitHub</a>
         </div>
         <p class="project-description">{{ project.description }}</p>
         <div class="project-tech">
-          <span *ngFor="let t of project.tech" class="tech-tag">{{ t }}</span>
+          @for (t of project.tech; track t) {
+          <span class="tech-tag">{{ t }}</span>
+          }
         </div>
-        <div *ngIf="project.link" class="project-link">
+        @if (project.link) {
+        <div class="project-link">
           <a [href]="project.link" target="_blank" rel="noopener">Live Demo ↗</a>
         </div>
+        }
       </article>
+      }
     </div>
     </div>
   </section>
@@ -95,7 +109,8 @@
       <div class="header-line"></div>
     </div>
     <div class="experience-timeline">
-      <article *ngFor="let exp of professionalExperience; let first = first" class="experience-item" [ngClass]="{ 'first-item': first }">
+      @for (exp of professionalExperience; let first = $first; track exp.company) {
+      <article class="experience-item" [class.first-item]="first">
         <div class="timeline-dot"></div>
         <div class="experience-content">
           <div class="experience-header">
@@ -104,10 +119,13 @@
             <span class="period">{{ exp.period }}</span>
           </div>
           <ul class="highlights">
-            <li *ngFor="let highlight of exp.highlights">{{ highlight }}</li>
+            @for (highlight of exp.highlights; track highlight) {
+            <li>{{ highlight }}</li>
+            }
           </ul>
         </div>
       </article>
+      }
     </div>
     </div>
   </section>
