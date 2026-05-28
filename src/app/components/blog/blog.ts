@@ -10,7 +10,7 @@ interface BlogPost {
   date: string;
   summary: string;
   tags: string[];
-  content: (string | { type: 'text', content: string } | { type: 'image', src: string, alt: string, caption?: string } | { type: 'youtube', url: string, title?: string } | { type: 'code', language: string, content: string })[];
+  content: (string | { type: 'text', content: string } | { type: 'image', src: string, alt: string, caption?: string } | { type: 'youtube', url: string, title?: string } | { type: 'code', language: string, content: string } | { type: 'pdf', url: string, title?: string, description?: string } | { type: 'table', headers: string[], rows: string[][] })[];
   image?: string;
   readTime?: string;
 }
@@ -142,6 +142,14 @@ export class Blog {
 
   isYouTubeContent(item: any): item is { type: 'youtube', url: string, title?: string } {
     return item && item.type === 'youtube';
+  }
+
+  isTableContent(item: any): item is { type: 'table', headers: string[], rows: string[][] } {
+    return item && item.type === 'table' && Array.isArray(item.headers) && Array.isArray(item.rows);
+  }
+
+  isPdfContent(item: any): item is { type: 'pdf', url: string, title?: string, description?: string } {
+    return item && item.type === 'pdf';
   }
 
   isCodeContent(item: any): item is { type: 'code', language: string, content: string } {

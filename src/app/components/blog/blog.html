@@ -1,7 +1,7 @@
 <div class="blog-container">
   <!-- Hero Section with Blog Image -->
-  <section *ngIf="blog() as post" class="blog-hero-section">
-    <div class="blog-hero-card" [style.background-image]="post.image ? 'url(' + post.image + ')' : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'">
+  <section [@If]="blog() as post" class="blog-hero-section">
+    <div class="blog-hero-card" [style.background-image]="post.image ? 'url(' + post.image + ')' : 'linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%)'">
       <div class="hero-overlay"></div>
       <div class="hero-content">
         <a routerLink="/blogs" class="back-link">← Back to Articles</a>
@@ -20,13 +20,13 @@
   </section>
 
   <!-- Loading State -->
-  <div *ngIf="loading()" class="loading-section">
+  <div [@If]="loading()" class="loading-section">
     <div class="loading-spinner"></div>
     <p>Loading blog post...</p>
   </div>
 
   <!-- Error State -->
-  <div *ngIf="error() && !loading()" class="error-section">
+  <div [@If]="error() && !loading()" class="error-section">
     <div class="error-card">
       <h2>Oops! Something went wrong</h2>
       <p class="mb-3">{{ error() }}</p>
@@ -35,24 +35,24 @@
   </div>
 
   <!-- Blog Content -->
-  <section *ngIf="shouldShowBlogContent()" class="blog-content-section">
+  <section [@If]="shouldShowBlogContent()" class="blog-content-section">
     <div class="section-container">
-      <article *ngIf="blog() as post" class="blog-article">
+      <article [@If]="blog() as post" class="blog-article">
         <div class="post-content">
           <div *ngFor="let item of post.content" class="content-item">
             <!-- Text Content -->
-            <div *ngIf="isTextContent(item)" [innerHTML]="formatTextContent(item)"></div>
+            <div [@If]="isTextContent(item)" [innerHTML]="formatTextContent(item)"></div>
 
             <!-- Image Content -->
-            <figure *ngIf="isImageContent(item)" class="content-image">
+            <figure [@If]="isImageContent(item)" class="content-image">
               <img [src]="item.src" [alt]="item.alt" loading="lazy" />
-              <figcaption *ngIf="item.caption">{{ item.caption }}</figcaption>
+              <figcaption [@If]="item.caption">{{ item.caption }}</figcaption>
             </figure>
 
             <!-- YouTube Video Content -->
-            <div *ngIf="isYouTubeContent(item)" class="content-video">
+            <div [@If]="isYouTubeContent(item)" class="content-video">
               <iframe
-                *ngIf="getSafeYouTubeUrl(item.url) as safeUrl"
+                [@If]="getSafeYouTubeUrl(item.url) as safeUrl"
                 [src]="safeUrl"
                 [title]="item.title || 'YouTube video'"
                 frameborder="0"
@@ -60,13 +60,39 @@
                 allowfullscreen
                 loading="lazy">
               </iframe>
-              <p *ngIf="!getSafeYouTubeUrl(item.url)" class="video-error">
+              <p [@If]="!getSafeYouTubeUrl(item.url)" class="video-error">
                 Unable to load YouTube video. Invalid URL: {{ item.url }}
               </p>
             </div>
 
+            <!-- Table Content -->
+            <div [@If]="isTableContent(item)" class="content-table">
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th *ngFor="let h of item.headers">{{ h }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of item.rows">
+                      <td *ngFor="let cell of row">{{ cell }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- PDF Content -->
+            <div [@If]="isPdfContent(item)" class="content-pdf">
+              <a [href]="item.url" target="_blank" rel="noopener noreferrer" class="pdf-card">
+                📄 {{ item.title || 'View PDF' }}
+              </a>
+              <p [@If]="item.description" class="pdf-description">{{ item.description }}</p>
+            </div>
+
             <!-- Code Block Content -->
-            <div *ngIf="isCodeContent(item)" class="content-code">
+            <div [@If]="isCodeContent(item)" class="content-code">
               <div class="code-header">
                 <span class="code-language">{{ item.language }}</span>
                 <button class="copy-code-btn" (click)="copyCode(item.content)" title="Copy code">📋 Copy</button>
@@ -92,7 +118,7 @@
   </section>
 
   <!-- Recommended Blogs Section -->
-  <section *ngIf="recommendedBlogs().length > 0" class="recommended-section">
+  <section [@If]="recommendedBlogs().length > 0" class="recommended-section">
     <div class="section-container">
       <div class="section-header">
         <h2>Recommended Articles</h2>

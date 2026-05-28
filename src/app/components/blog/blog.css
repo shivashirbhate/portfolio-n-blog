@@ -81,6 +81,7 @@
   font-size: 0.9rem;
   opacity: 0.9;
   font-weight: 500;
+  color: #eee;
 }
 
 .blog-title {
@@ -100,6 +101,7 @@
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  color: #333;
 }
 
 .blog-tags {
@@ -246,6 +248,41 @@
   color: #666;
   font-style: italic;
 }
+
+/* Table Content */
+.content-table {
+  margin: 2rem 0;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+}
+
+.table-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+.table-wrapper th,
+.table-wrapper td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e6eef9;
+  text-align: left;
+}
+
+.table-wrapper thead th {
+  background: #f1f7ff;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.table-wrapper tbody tr:nth-child(even) {
+  background: #fbfdff;
+}
+
 
 /* YouTube Video Content */
 .content-video {
@@ -544,6 +581,27 @@
 .nav-link:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+/* PDF Button */
+.view-pdf-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--accent-color);
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.view-pdf-button:hover {
+  background-color: var(--accent-dark-color);
+  transform: translateY(-2px);
 }
 
 /* Responsive Design */
